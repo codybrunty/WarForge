@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameBootstrapper : MonoBehaviour {
@@ -5,6 +6,7 @@ public class GameBootstrapper : MonoBehaviour {
     public static SaveLoadService SaveLoad => ServiceLocator.Get<SaveLoadService>();
     public static ObjectPoolService ObjectPool => ServiceLocator.Get<ObjectPoolService>();
     public static UIService UIService => ServiceLocator.Get<UIService>();
+    public static RecruitService RecruitService => ServiceLocator.Get<RecruitService>();
 
     [SerializeField] private Transform uiRoot;
 
@@ -36,6 +38,10 @@ public class GameBootstrapper : MonoBehaviour {
         RegisterSaveLoadService();
         RegisterObjectPoolService();
         RegisterUIService();
+        RegisterRecruitService();
+    }
+    private void RegisterRecruitService() {
+        ServiceLocator.Register(new RecruitService());
     }
     private void RegisterSaveLoadService() {
         ServiceLocator.Register(new SaveLoadService());
