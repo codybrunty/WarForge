@@ -5,8 +5,9 @@ public class GameBootstrapper : MonoBehaviour {
     public static GameBootstrapper Instance { get; private set; }
     public static SaveLoadService SaveLoad => ServiceLocator.Get<SaveLoadService>();
     public static ObjectPoolService ObjectPool => ServiceLocator.Get<ObjectPoolService>();
-    public static UIService UIService => ServiceLocator.Get<UIService>();
-    public static RecruitService RecruitService => ServiceLocator.Get<RecruitService>();
+    public static UIService UI => ServiceLocator.Get<UIService>();
+    public static RecruitService Recruit => ServiceLocator.Get<RecruitService>();
+    public static NameGenerationService NameGeneration => ServiceLocator.Get<NameGenerationService>();
 
     [SerializeField] private Transform uiRoot;
 
@@ -20,7 +21,7 @@ public class GameBootstrapper : MonoBehaviour {
 
         SetupAllServices();
         SetupAllRegistries();
-
+        //LoadAllData
         Debug.Log("Game Bootstrapper initialized.");
     }
 
@@ -38,7 +39,11 @@ public class GameBootstrapper : MonoBehaviour {
         RegisterSaveLoadService();
         RegisterObjectPoolService();
         RegisterUIService();
+        RegisterNameGenerationService();
         RegisterRecruitService();
+    }
+    private void RegisterNameGenerationService() {
+        ServiceLocator.Register(new NameGenerationService());
     }
     private void RegisterRecruitService() {
         ServiceLocator.Register(new RecruitService());
@@ -54,5 +59,19 @@ public class GameBootstrapper : MonoBehaviour {
         ServiceLocator.Register(new UIService(uiRoot));
     }
     #endregion
+
+    private bool isRecruitMenuOpen = false;
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            if (isRecruitMenuOpen) {
+                UI.CloseScreen("RecruitPopup");
+            }
+            else {
+                UI.OpenScreen("RecruitPopup");
+            }
+
+            isRecruitMenuOpen = !isRecruitMenuOpen;
+        }
+    }
 
 }

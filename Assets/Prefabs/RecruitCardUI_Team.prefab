@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 7669477442172789962}
   - component: {fileID: 8078091334742900074}
   m_Layer: 5
-  m_Name: RecruitCardUI
+  m_Name: RecruitCardUI_Team
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -130,6 +130,8 @@ MonoBehaviour:
   portraitImage: {fileID: 7475116276161532265}
   nameText: {fileID: 8691040001106325095}
   classText: {fileID: 7167000544962815268}
+  boyColor: {r: 0.16140087, g: 0.87735814, b: 0.8773585, a: 1}
+  girlColor: {r: 0.9339623, g: 0.6740388, b: 0.88070625, a: 1}
 --- !u!114 &8078091334742900074
 MonoBehaviour:
   m_ObjectHideFlags: 0
