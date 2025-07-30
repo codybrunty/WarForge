@@ -372,8 +372,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   screens:
-  - key: RecruitPopup
+  - key: RecruitMenu
     prefab: {fileID: 6440251190313837047, guid: 494e27b1efc8fb34a8afbe3ea60f5abf, type: 3}
+  - key: MainMenu
+    prefab: {fileID: 4408755094550679156, guid: 190cc1c7720dbd847ab73baef6d019a7, type: 3}
 --- !u!114 &948461588
 MonoBehaviour:
   m_ObjectHideFlags: 0

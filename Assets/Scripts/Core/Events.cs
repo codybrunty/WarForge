@@ -5,3 +5,5 @@ public class RecruitSelectedEvent {
         Recruit = recruit;
     }
 }
+
+public class ResetGameEvent {}

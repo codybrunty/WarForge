@@ -49,6 +49,9 @@ public class RecruitPopup_Viewmodel : MonoBehaviour {
             GameBootstrapper.ObjectPool.ReturnToPool(RecruitCardUITeamPoolKey, child.gameObject);
         }
     }
+    public void CloseOnClick() {
+        GameBootstrapper.UI.CloseScreen("RecruitMenu");
+    }
     private void OnEnable() {
         EventBus.Subscribe<RecruitSelectedEvent>(OnRecruitClicked);
     }

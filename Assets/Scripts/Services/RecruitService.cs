@@ -18,9 +18,10 @@ public class RecruitService {
     }
 
     public void AddToTeam(Recruit recruit) {
-        if (!team.Contains(recruit)) {
+        if (!team.Contains(recruit) && team.Count < GameConfigs.TeamConfig.MaxTeamSize) {
             team.Add(recruit);
             recruits.Remove(recruit);
+            SaveTeam();
         }
     }
 
@@ -28,9 +29,29 @@ public class RecruitService {
         if (!graveyard.Contains(recruit)) {
             graveyard.Add(recruit);
             team.Remove(recruit);
+            SaveTeam();
         }
     }
+    public void SaveTeam() {
+        var teamData = new List<Recruit_Serializable>();
+        foreach (var recruit in team) {
+            teamData.Add(new Recruit_Serializable(recruit));
+        }
+        GameBootstrapper.SaveLoad.Save("Team", teamData);
+    }
+    public void LoadTeam() {
+        var teamData = GameBootstrapper.SaveLoad.Load<List<Recruit_Serializable>>("Team");
+        team.Clear();
 
+        if (teamData != null) {
+            foreach (var recruit in teamData) {
+                team.Add(recruit.ToRecruit());
+            }
+        }
+    }
+    public void ResetTeam() {
+        GameBootstrapper.SaveLoad.Delete("Team");
+    }
     public Recruit GenerateRandomRecruit() {
         RecruitType type = GetRandomClassType();
         RecruitGender gender = GetRandomGender(); 
