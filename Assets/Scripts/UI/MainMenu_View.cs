@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MainMenu_Viewmodel : MonoBehaviour {
+public class MainMenu_View : MonoBehaviour {
 
     public void RecruitOnClick() {
         GameBootstrapper.UI.OpenScreen("RecruitMenu");

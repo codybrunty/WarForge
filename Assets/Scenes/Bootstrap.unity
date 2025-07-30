@@ -389,10 +389,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pooledPrefabs:
-  - key: RecruitCardUI_Recruit
-    prefab: {fileID: 5391987564945884298, guid: 25885e05a5ffd64449e9475adade7248, type: 3}
-    initialSize: 0
-  - key: RecruitCardUI_Team
+  - key: RecruitCard_View
     prefab: {fileID: 5391987564945884298, guid: 268c6920061fc044c866f0165a82e31d, type: 3}
     initialSize: 0
 --- !u!1 &1284677877
