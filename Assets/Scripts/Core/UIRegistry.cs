@@ -7,7 +7,7 @@ public class UIRegistry : MonoBehaviour, IRegistry {
 
     public void Setup() {
         foreach (var screen in screens) {
-            GameBootstrapper.UIService.RegisterScreen(screen.key, screen.prefab);
+            GameBootstrapper.UI.RegisterScreen(screen.key, screen.prefab);
         }
         Debug.Log("[UIRegistry] UI Screens registered.");
     }
