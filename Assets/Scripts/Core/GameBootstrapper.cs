@@ -8,8 +8,9 @@ public class GameBootstrapper : MonoBehaviour {
     public static UIService UI => ServiceLocator.Get<UIService>();
     public static RecruitService Recruit => ServiceLocator.Get<RecruitService>();
     public static NameGenerationService NameGeneration => ServiceLocator.Get<NameGenerationService>();
-
+    public static DayService Day => ServiceLocator.Get<DayService>();
     [SerializeField] private Transform uiRoot;
+    private const string MainMenu_UIKey = "MainMenu";
 
     void Awake() {
         if (Instance != null && Instance != this) {
@@ -44,8 +45,12 @@ public class GameBootstrapper : MonoBehaviour {
         RegisterSaveLoadService();
         RegisterObjectPoolService();
         RegisterUIService();
+        RegisterDayService();
         RegisterNameGenerationService();
         RegisterRecruitService();
+    }
+    private void RegisterDayService() {
+        ServiceLocator.Register(new DayService());
     }
     private void RegisterNameGenerationService() {
         ServiceLocator.Register(new NameGenerationService());
@@ -67,13 +72,19 @@ public class GameBootstrapper : MonoBehaviour {
 
     #region Save Load Reset
     private void LoadAllData() {
+        Recruit.LoadRecruits();
         Recruit.LoadTeam();
+        Day.LoadDay();
     }
     public void SaveAllData() {
+        Recruit.SaveRecruits();
         Recruit.SaveTeam();
+        Day.SaveDay();
     }
     public void ResetAllData(ResetGameEvent evt) {
-        Recruit.ResetTeam();
+        Recruit.DeleteRecruits();
+        Recruit.DeleteTeam();
+        Day.DeleteDay();
         UI.CloseAllScreens();
         LoadAllData();
         StartGame();
@@ -96,7 +107,7 @@ public class GameBootstrapper : MonoBehaviour {
 
     #region Game
     private void StartGame() {
-        UI.OpenScreen("MainMenu");
+        UI.OpenScreen(MainMenu_UIKey);
     }
     #endregion
 

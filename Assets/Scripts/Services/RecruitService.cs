@@ -9,12 +9,20 @@ public class RecruitService {
     public List<Recruit> GetRecruits() => recruits;
     public List<Recruit> GetTeam() => team;
     public List<Recruit> GetGraveyard() => graveyard;
+    private const string RecruitServiceTeam_SaveLoadKey = "Team";
+    private const string RecruitServiceRecruits_SaveLoadKey = "Recruits";
 
-    public void RefreshRecruitPool(int poolSize) {
-        recruits.Clear();
-        for (int i = 0; i < poolSize; i++) {
+    public RecruitService() {
+        EventBus.Subscribe<NewDayEvent>(OnNewDay);
+        EventBus.Subscribe<FirstDayEvent>(OnFirstDay);
+    }
+
+    public void UpdateRecruitPool() {
+        int recruitsToAdd = Mathf.Min(GameConfigs.RecruitPoolConfig.IncrementRecruitPoolBy, GameConfigs.RecruitPoolConfig.RecruitPoolMaxSize - recruits.Count);
+        for (int i = 0; i < recruitsToAdd; i++) {
             recruits.Add(GenerateRandomRecruit());
         }
+        SaveRecruits();
     }
 
     public void AddToTeam(Recruit recruit) {
@@ -22,6 +30,7 @@ public class RecruitService {
             team.Add(recruit);
             recruits.Remove(recruit);
             SaveTeam();
+            SaveRecruits();
         }
     }
 
@@ -32,15 +41,17 @@ public class RecruitService {
             SaveTeam();
         }
     }
+
+    #region Data
     public void SaveTeam() {
         var teamData = new List<Recruit_Serializable>();
         foreach (var recruit in team) {
             teamData.Add(new Recruit_Serializable(recruit));
         }
-        GameBootstrapper.SaveLoad.Save("Team", teamData);
+        GameBootstrapper.SaveLoad.Save(RecruitServiceTeam_SaveLoadKey, teamData);
     }
     public void LoadTeam() {
-        var teamData = GameBootstrapper.SaveLoad.Load<List<Recruit_Serializable>>("Team");
+        var teamData = GameBootstrapper.SaveLoad.Load<List<Recruit_Serializable>>(RecruitServiceTeam_SaveLoadKey);
         team.Clear();
 
         if (teamData != null) {
@@ -49,9 +60,33 @@ public class RecruitService {
             }
         }
     }
-    public void ResetTeam() {
-        GameBootstrapper.SaveLoad.Delete("Team");
+    public void DeleteTeam() {
+        GameBootstrapper.SaveLoad.Delete(RecruitServiceTeam_SaveLoadKey);
     }
+    public void SaveRecruits() {
+        var recruitsData = new List<Recruit_Serializable>();
+        foreach (var recruit in recruits) {
+            recruitsData.Add(new Recruit_Serializable(recruit));
+        }
+        GameBootstrapper.SaveLoad.Save(RecruitServiceRecruits_SaveLoadKey, recruitsData);
+    }
+
+    public void LoadRecruits() {
+        var recruitsData = GameBootstrapper.SaveLoad.Load<List<Recruit_Serializable>>(RecruitServiceRecruits_SaveLoadKey);
+        recruits.Clear();
+
+        if (recruitsData != null) {
+            foreach (var recruit in recruitsData) {
+                recruits.Add(recruit.ToRecruit());
+            }
+        }
+    }
+    public void DeleteRecruits() {
+        GameBootstrapper.SaveLoad.Delete(RecruitServiceRecruits_SaveLoadKey);
+    }
+    #endregion
+
+    #region Recruit
     public Recruit GenerateRandomRecruit() {
         RecruitType type = GetRandomClassType();
         RecruitGender gender = GetRandomGender(); 
@@ -67,4 +102,15 @@ public class RecruitService {
         var values = System.Enum.GetValues(typeof(RecruitGender));
         return (RecruitGender)values.GetValue(Random.Range(0, values.Length));
     }
+    #endregion
+
+    #region Events
+    private void OnNewDay(NewDayEvent evt) {
+        UpdateRecruitPool();
+    }
+    private void OnFirstDay(FirstDayEvent evt) {
+        UpdateRecruitPool();
+    }
+    #endregion
+
 }
