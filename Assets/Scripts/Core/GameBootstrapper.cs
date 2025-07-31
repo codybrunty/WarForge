@@ -9,8 +9,8 @@ public class GameBootstrapper : MonoBehaviour {
     public static RecruitService Recruit => ServiceLocator.Get<RecruitService>();
     public static NameGenerationService NameGeneration => ServiceLocator.Get<NameGenerationService>();
     public static DayService Day => ServiceLocator.Get<DayService>();
-
     [SerializeField] private Transform uiRoot;
+    private const string MainMenu_UIKey = "MainMenu";
 
     void Awake() {
         if (Instance != null && Instance != this) {
@@ -107,7 +107,7 @@ public class GameBootstrapper : MonoBehaviour {
 
     #region Game
     private void StartGame() {
-        UI.OpenScreen("MainMenu");
+        UI.OpenScreen(MainMenu_UIKey);
     }
     #endregion
 

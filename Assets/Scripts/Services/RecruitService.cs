@@ -18,7 +18,7 @@ public class RecruitService {
     }
 
     public void UpdateRecruitPool() {
-        int recruitsToAdd = Mathf.Min(GameConfigs.RecruitPoolConfig.IncrementRecruitPoolSize, GameConfigs.RecruitPoolConfig.RecruitPoolMaxSize - recruits.Count);
+        int recruitsToAdd = Mathf.Min(GameConfigs.RecruitPoolConfig.IncrementRecruitPoolBy, GameConfigs.RecruitPoolConfig.RecruitPoolMaxSize - recruits.Count);
         for (int i = 0; i < recruitsToAdd; i++) {
             recruits.Add(GenerateRandomRecruit());
         }
