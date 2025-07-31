@@ -6,12 +6,9 @@ public class RecruitPopup_View : MonoBehaviour {
     [SerializeField] private Transform teamContainer;
 
     private void Start() {
-        InstantiateRecruitPool();
         RefreshAll();
     }
-    private void InstantiateRecruitPool() {
-        GameBootstrapper.Recruit.RefreshRecruitPool(10);
-    }
+
     private void RefreshAll() {
         RefreshRecruitsUI();
         RefreshTeamUI();
